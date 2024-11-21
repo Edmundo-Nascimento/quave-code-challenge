@@ -1,7 +1,9 @@
 import React from 'react';
+import EventCheckInDashboard from './components/EventCheckInDashboard';
+import { AppProvider } from './context/AppProvider';
 
 export const App = () => (
-  <div>
-    <h1 className="text-lg font-bold">Event Check-in</h1>
-  </div>
+  <AppProvider>
+    <EventCheckInDashboard />
+  </AppProvider>
 );
