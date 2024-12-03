@@ -11,14 +11,14 @@ export default function PeopleTable() {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { loading, people, totalPeople, peopleNotCheckedOut } =
+  const { loading, people, totalPeople, peopleNotCheckedOut, peopleByCompany } =
     useTracker(() => {
       if (!selectedEvent) return { people: [], totalPeople: 0 };
 
       const handle = Meteor.subscribe('people', selectedEvent);
 
       if (!handle.ready()) {
-        return { people: [], totalPeople: 0 };
+        return { people: [], totalPeople: 0, peopleByCompany: [] };
       }
 
       const loading = !handle.ready();
@@ -36,7 +36,15 @@ export default function PeopleTable() {
             $or: [{ checkOutDate: { $exists: false } }, { checkOutDate: null }],
           }).fetch();
 
-      return { loading, people, totalPeople, peopleNotCheckedOut };
+      const peopleByCompany = loading ? [] :  People.find(
+        { 
+          communityId: selectedEvent,
+          checkInDate: { $exists: true },
+          checkOutDate: { $exists: false }
+        }
+      ).fetch();
+
+      return { loading, people, totalPeople, peopleNotCheckedOut, peopleByCompany };
     }, [selectedEvent, currentPage]);
 
   return (
@@ -85,7 +93,7 @@ export default function PeopleTable() {
               </div>
             </div>
           </div>
-          <PeopleByCompany people={people} />
+          <PeopleByCompany people={peopleByCompany} />
         </div>
       </main>
     </>
