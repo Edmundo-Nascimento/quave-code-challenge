@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 export default function PeopleByCompany({ people }) {
+  const InitialVisibleCompanies = 5;
   const [peopleByCompany, setPeopleByCompany] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(5); // Quantidade inicial de empresas visíveis
+  const [visibleCount, setVisibleCount] = useState(InitialVisibleCompanies); // Quantidade inicial de empresas visíveis
 
   useEffect(() => {
+    setVisibleCount(InitialVisibleCompanies);
+    
     const companies = people.reduce((acc, person) => {
       if (person && person.companyName) {
         acc[person.companyName] = (acc[person.companyName] || 0) + 1;
