@@ -11,7 +11,10 @@ export default function PeopleByCompany({ people }) {
     const companies = people.reduce((acc, person) => {
       if (person && person.companyName) {
         acc[person.companyName] = (acc[person.companyName] || 0) + 1;
+      } else {
+        acc["No company"] = (acc["No company"] || 0) + 1;
       }
+
       return acc;
     }, {});
 
